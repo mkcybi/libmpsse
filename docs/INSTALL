@@ -14,7 +14,9 @@ INSTALLATION
 
 	With the required prerequisites installed, libmpsse can be built and installed:
 
-		$ ./configure
+		$ mkdir build
+		$ cd build
+		$ cmake ../
 		$ make
 		# make install
 
@@ -25,23 +27,6 @@ INSTALLATION
 		SWIG   - Path to the swig binary
 		PYDEV  - Path to the python include directory where the python header files are located
 		PYLIB  - Path to the python library directory where python modules should be installed
-
-	Example:
-
-		$ PYDEV=/usr/local/include/python2.6/ ./configure
-		$ make
-		# make install
-
-	To build without the Python wrapper libraries, specify the --disable-python argument
-	when running the configure script:
-
-		$ ./configure --disable-python
-
-BUILDING EXAMPLE CODE
-
-	After libmpsse has been installed, you can build the example C programs by running:
-
-		$ make examples
 
 UNINSTALLATION
 	
