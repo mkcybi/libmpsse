@@ -6,7 +6,7 @@
  */
 
 #include <string.h>
-
+#include <stdlib.h>
 #include <ftdi.h>
 
 #include "mpsse.h"
