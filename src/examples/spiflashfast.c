@@ -27,18 +27,14 @@ int main(void)
 		FastRead(flash, data, SIZE);
 		Stop(flash);
 		
-		if(data)
+		fp = fopen(FOUT, "wb");
+		if(fp)
 		{
-			fp = fopen(FOUT, "wb");
-			if(fp)
-			{
-				fwrite(data, 1, SIZE, fp);
-				fclose(fp);
+			fwrite(data, 1, SIZE, fp);
+			fclose(fp);
 				
-				printf("Dumped %d bytes to %s\n", SIZE, FOUT);
-				retval = EXIT_SUCCESS;
-			}
-
+			printf("Dumped %d bytes to %s\n", SIZE, FOUT);
+			retval = EXIT_SUCCESS;
 		}
 	}
 	else
