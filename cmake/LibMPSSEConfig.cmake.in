@@ -1,0 +1,45 @@
+#                                               -*- cmake -*-
+#
+#  LibMPSSEConfig.cmake(.in)
+#
+#  Copyright (C) 2013 Intra2net AG and the LIBMPSSE developers
+#
+#  This file is part of LiMPSSE.
+#
+#  LIBMPSSE is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU Lesser General Public License
+#  version 2.1 as published by the Free Software Foundation;
+#
+
+# Use the following variables to compile and link against LIBMPSSE:
+#  LIBMPSSE_FOUND              - True if LIBMPSSE was found on your system
+#  LIBMPSSE_USE_FILE           - The file making LIBMPSSE usable
+#  LIBMPSSE_DEFINITIONS        - Definitions needed to build with LIBMPSSE
+#  LIBMPSSE_INCLUDE_DIRS       - Directory where OT.hxx can be found
+#  LIBMPSSE_INCLUDE_DIRS       - List of directories of LIBMPSSE and it's dependencies
+#  LIBMPSSE_LIBRARY            - LIBMPSSE library location
+#  LIBMPSSE_LIBRARIES          - List of libraries to link against LIBMPSSE library
+#  LIBMPSSE_LIBRARY_DIRS       - List of directories containing LIBMPSSE' libraries
+#  LIBMPSSE_ROOT_DIR           - The base directory of LIBMPSSE
+#  LIBMPSSE_VERSION_STRING     - A human-readable string containing the version
+#  LIBMPSSE_VERSION_MAJOR      - The major version of LIBMPSSE
+#  LIBMPSSE_VERSION_MINOR      - The minor version of LIBMPSSE
+#  LIBMPSSE_VERSION_PATCH      - The patch version of LIBMPSSE
+#  LIBMPSSE_PYTHON_MODULE_PATH - Path to the python module
+
+set ( LIBMPSSE_FOUND 1 )
+set ( LIBMPSSE_USE_FILE     "@LIBMPSSE_USE_FILE@" )
+
+set ( LIBMPSSE_DEFINITIONS  "@LIBMPSSE_DEFINITIONS@" )
+set ( LIBMPSSE_INCLUDE_DIR  "@LIBMPSSE_INCLUDE_DIR@" )
+set ( LIBMPSSE_INCLUDE_DIRS "@LIBMPSSE_INCLUDE_DIRS@" )
+set ( LIBMPSSE_LIBRARY      "@LIBMPSSE_LIBRARY@" )
+set ( LIBMPSSE_LIBRARIES    "@LIBMPSSE_LIBRARIES@" )
+set ( LIBMPSSE_LIBRARY_DIRS "@LIBMPSSE_LIBRARY_DIRS@" )
+set ( LIBMPSSE_ROOT_DIR     "@LIBMPSSE_ROOT_DIR@" )
+
+set ( LIBMPSSE_VERSION_STRING "@LIBMPSSE_VERSION_STRING@" )
+set ( LIBMPSSE_VERSION_MAJOR  "@LIBMPSSE_VERSION_MAJOR@" )
+set ( LIBMPSSE_VERSION_MINOR  "@LIBMPSSE_VERSION_MINOR@" )
+set ( LIBMPSSE_VERSION_PATCH  "@LIBMPSSE_VERSION_PATCH@" )
+

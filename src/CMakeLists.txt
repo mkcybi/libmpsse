@@ -21,13 +21,13 @@ target_link_libraries(mpsse ${LIBFTDI_LIBRARIES} )
 
 install(TARGETS mpsse
 	RUNTIME DESTINATION bin
-	LIBRARY DESTINATION lib
-	ARCHIVE DESTINATION lib
+	LIBRARY DESTINATION lib${LIB_SUFFIX}
+	ARCHIVE DESTINATION lib${LIB_SUFFIX}
 )
 
 set_target_properties(mpsse-static PROPERTIES OUTPUT_NAME "mpsse")
 install(TARGETS mpsse-static
-	ARCHIVE DESTINATION lib
+	ARCHIVE DESTINATION lib${LIB_SUFFIX}
 )
 
 set(HEADER_FILES mpsse.h)
