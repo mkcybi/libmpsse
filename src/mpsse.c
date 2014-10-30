@@ -196,6 +196,96 @@ struct mpsse_context *OpenIndex(int vid, int pid, enum modes mode, int freq, int
 	return mpsse;
 }
 
+
+struct mpsse_context *mpsse_open_str(enum modes mode, int freq, int endianess, const char *device, enum ftdi_interface interface)
+{
+	int status = 0;
+	struct mpsse_context *mpsse = NULL;
+
+	mpsse = malloc(sizeof(struct mpsse_context));
+	if (!mpsse)
+		return NULL;
+
+	memset(mpsse, 0, sizeof(struct mpsse_context));
+
+	/* Legacy; flushing is no longer needed, so disable it by default. */
+	FlushAfterRead(mpsse, 0);
+
+	/* ftdilib initialization */
+	if (ftdi_init(&mpsse->ftdi) != 0)
+		goto out_ftdi_init;
+
+	mpsse->ftdi_initialized = 1;
+
+	/* Set the FTDI interface  */
+	ftdi_set_interface(&mpsse->ftdi, interface);
+
+	/* Open the specified device */
+	if(ftdi_usb_open_string(&mpsse->ftdi, device) != 0)
+		goto out_ftdi_open;
+
+	mpsse->mode = mode;
+	mpsse->vid = 0;
+	mpsse->pid = 0;
+	mpsse->status = STOPPED;
+	mpsse->endianess = endianess;
+
+	/* Set the appropriate transfer size for the requested protocol */
+	if (mpsse->mode == I2C)
+		mpsse->xsize = I2C_TRANSFER_SIZE;
+	else
+		mpsse->xsize = SPI_RW_SIZE;
+
+	status |= ftdi_usb_reset(&mpsse->ftdi);
+	status |= ftdi_set_latency_timer(&mpsse->ftdi, LATENCY_MS);
+	status |= ftdi_write_data_set_chunksize(&mpsse->ftdi, CHUNK_SIZE);
+	status |= ftdi_read_data_set_chunksize(&mpsse->ftdi, CHUNK_SIZE);
+	status |= ftdi_set_bitmode(&mpsse->ftdi, 0, BITMODE_RESET);
+
+	if(status == 0)
+	{
+		/* Set the read and write timeout periods */
+		set_timeouts(mpsse, USB_TIMEOUT);
+
+		if(mpsse->mode != BITBANG)
+		{
+			ftdi_set_bitmode(&mpsse->ftdi, 0, BITMODE_MPSSE);
+
+			if(SetClock(mpsse, freq) != MPSSE_OK)
+				goto out_ftdi_open;
+
+			if(SetMode(mpsse, endianess) != MPSSE_OK)
+				goto out_ftdi_open;
+
+			mpsse->open = 1;
+
+			/* Give the chip a few mS to initialize */
+			usleep(SETUP_DELAY);
+
+			/* 
+			 * Not all FTDI chips support all the commands that SetMode may have sent.
+			 * This clears out any errors from unsupported commands that might have been sent during set up. 
+			 */
+			ftdi_usb_purge_buffers(&mpsse->ftdi);
+		}
+		else
+		{
+			/* Skip the setup functions if we're just operating in BITBANG mode */
+			if(ftdi_set_bitmode(&mpsse->ftdi, 0xFF, BITMODE_BITBANG) == 0)
+			{
+				mpsse->open = 1;
+			}
+		}
+	}
+	return mpsse;
+
+out_ftdi_open:
+	ftdi_deinit(&mpsse->ftdi);
+out_ftdi_init:
+	free(mpsse);
+	return NULL;
+}
+
 /* 
  * Closes the device, deinitializes libftdi, and frees the MPSSE context pointer.
  *
